@@ -1,0 +1,5 @@
+student-management-app/
+ ├─ index.js
+ ├─ package.json
+ ├─ node_modules/
+ └─ README.md
