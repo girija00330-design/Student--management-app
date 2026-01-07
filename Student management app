@@ -1,7 +1,52 @@
-student-management-app/
- git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/USERNAME/student-management-app.git
-git push -u origin main
+const express = require("express");
+const app = express();
+app.use(express.json());
+
+let doctors = [
+  {
+    id: 1,
+    name: "Dr. Arun",
+    specialization: "Cardiology",
+    phone: "9876543210",
+    email: "arun@gmail.com",
+    hospital: "Apollo Hospital"
+  }
+];
+
+// GET all doctors
+app.get("/doctors", (req, res) => {
+  res.json(doctors);
+});
+
+// GET doctor by ID
+app.get("/doctors/:id", (req, res) => {
+  const doctor = doctors.find(d => d.id == req.params.id);
+  doctor ? res.json(doctor) : res.status(404).send("Doctor not found");
+});
+
+// ADD new doctor
+app.post("/doctors", (req, res) => {
+  doctors.push(req.body);
+  res.send("Doctor added successfully");
+});
+
+// UPDATE doctor
+app.put("/doctors/:id", (req, res) => {
+  const index = doctors.findIndex(d => d.id == req.params.id);
+  if (index !== -1) {
+    doctors[index] = req.body;
+    res.send("Doctor updated successfully");
+  } else {
+    res.status(404).send("Doctor not found");
+  }
+});
+
+// DELETE doctor
+app.delete("/doctors/:id", (req, res) => {
+  doctors = doctors.filter(d => d.id != req.params.id);
+  res.send("Doctor deleted successfully");
+});
+
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
+});
